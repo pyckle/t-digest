@@ -678,7 +678,9 @@ public class MergingDigest extends AbstractTDigest {
         // at the boundaries, we return min or max
         if (index < weight[0] / 2) {
             assert weight[0] > 0;
-            return min + 2 * index / weight[0] * (mean[0] - min);
+            double z1 = index;
+            double z2 = weight[0] / 2 - index;
+            return weightedAverage(min, z2, mean[0], z1);
         }
 
         // in between we interpolate between centroids
@@ -698,7 +700,7 @@ public class MergingDigest extends AbstractTDigest {
 
         // weightSoFar = totalWeight - weight[n-1]/2 (very nearly)
         // so we interpolate out to max value ever seen
-        double z1 = index - totalWeight - weight[n - 1] / 2.0;
+        double z1 = totalWeight - index;
         double z2 = weight[n - 1] / 2 - z1;
         return weightedAverage(mean[n - 1], z1, max, z2);
     }
