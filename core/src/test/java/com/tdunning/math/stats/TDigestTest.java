@@ -934,4 +934,12 @@ public abstract class TDigestTest extends AbstractTest {
 //        }
 //        return Math.max(d1, d2);
 //    }
+
+    @Test
+    public void testDivideByZeroInQuantiles() {
+        TDigest digest = factory().create();
+        digest.add(1, 98);
+        digest.add(2, 2);
+        Assert.assertFalse(Double.isNaN(digest.quantile(.99)));
+    }
 }

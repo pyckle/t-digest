@@ -709,18 +709,18 @@ public class MergingDigest extends AbstractTDigest {
         // that one sample occurred at min so we can do some interpolation
         if (weight[0] > 1 && index < weight[0] / 2) {
             // there is a single sample at min so we interpolate with less weight
-            return min + (index - 1) / (weight[0] / 2 - 1) * (mean[0] - min);
+            return min + (index - 1) / ((weight[0] - 1) / 2) * (mean[0] - min);
         }
 
         // usually the last centroid will have unit weight so this test will make it moot
-        if (index > totalWeight - 1) {
+        if (index >= totalWeight - 1) {
             return max;
         }
 
         // if the right-most centroid has more than one sample, we still know
         // that one sample occurred at max so we can do some interpolation
-        if (weight[n-1] > 1 && totalWeight - index <= weight[n - 1] / 2) {
-            return max - (totalWeight - index - 1) / (weight[n - 1] / 2 - 1) * (max - mean[n - 1]);
+        if (weight[n - 1] > 1 && totalWeight - index <= weight[n - 1] / 2) {
+            return max - (totalWeight - index - 1) / ((weight[n - 1] - 1) / 2) * (max - mean[n - 1]);
         }
 
         // in between extremes we interpolate between centroids
